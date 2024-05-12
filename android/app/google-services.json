@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933559243147",
+    "project_id": "a4c-shop-ae65c",
+    "storage_bucket": "a4c-shop-ae65c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933559243147:android:066ed2e5da3137b3255f8e",
+        "android_client_info": {
+          "package_name": "com.example.allforc_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskEUeqkdNE-ba1ODwT1NT_um0VH0FFbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
