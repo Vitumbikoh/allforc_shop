@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class ProductListingPage extends StatefulWidget {
-  final List<Product> cartItems; // Define _cartItems here
+import 'cart.dart';
 
-  ProductListingPage({Key? key, required this.cartItems}) : super(key: key);
+class ProductListingPage extends StatefulWidget {
+  const ProductListingPage({Key? key, required List<Product> cartItems}) : super(key: key);
 
   @override
   _ProductListingPageState createState() => _ProductListingPageState();
@@ -17,6 +17,8 @@ class _ProductListingPageState extends State<ProductListingPage> {
 
   late Database _database;
   late Future<void> _databaseInitialized;
+
+  List<Product> _cartItems = [];
 
   @override
   void initState() {
@@ -110,7 +112,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
                                     IconButton(
                                       onPressed: () {
                                         _addToCart(product);
-                                        setState(() {}); // Update UI
                                       },
                                       icon: Icon(
                                         Icons.add_shopping_cart,
@@ -136,7 +137,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
                                               context, product);
                                         } else if (value == 'delete') {
                                           _deleteProduct(product);
-                                          setState(() {}); // Update UI
                                         }
                                       },
                                     ),
@@ -145,18 +145,33 @@ class _ProductListingPageState extends State<ProductListingPage> {
                               ]);
                             }),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CartPage(cartItems: widget.cartItems),
+                          // Display cart items
+                          if (_cartItems.isNotEmpty)
+                            Column(
+                              children: [
+                                SizedBox(height: 20),
+                                Text(
+                                  'Cart Items:',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Text('View Cart'),
-                          ),
+                                SizedBox(height: 10),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: _cartItems.length,
+                                  itemBuilder: (context, index) {
+                                    final cartProduct = _cartItems[index];
+                                    return ListTile(
+                                      title: Text(cartProduct.name),
+                                      subtitle: Text(
+                                          '\$${cartProduct.price.toStringAsFixed(2)}'),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                         ],
                       );
                     }
@@ -317,8 +332,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
     return _cartItems.contains(product);
   }
 
-  List<Product> _cartItems = [];
-
   void _addToCart(Product product) {
     setState(() {
       // Toggle product in cart
@@ -343,29 +356,5 @@ class Product {
       'name': name,
       'price': price,
     };
-  }
-}
-
-
-class CartPage extends StatelessWidget {
-  final List<Product> cartItems;
-
-  const CartPage({Key? key, required this.cartItems}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      
-      body: ListView.builder(
-        itemCount: cartItems.length,
-        itemBuilder: (context, index) {
-          final product = cartItems[index];
-          return ListTile(
-            title: Text(product.name),
-            subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-          );
-        },
-      ),
-    );
   }
 }

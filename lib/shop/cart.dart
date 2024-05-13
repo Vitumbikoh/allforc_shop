@@ -1,11 +1,10 @@
-// cart.dart
 import 'package:flutter/material.dart';
 import 'products.dart'; // Import ProductListingPage
 
 class CartPage extends StatelessWidget {
   final List<Product> cartItems;
 
-  const CartPage({super.key, required this.cartItems});
+  const CartPage({Key? key, required this.cartItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

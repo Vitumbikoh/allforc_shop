@@ -7,24 +7,23 @@ import 'products.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+class ShopDashboardPage extends StatefulWidget {
+  const ShopDashboardPage({Key? key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<ShopDashboardPage> createState() => _ShopDashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _ShopDashboardPageState extends State<ShopDashboardPage> {
   int _selectedIndex = 0;
   late Database _database;
   late Future<void> _databaseInitialized;
-  List<Product> products = []; // Initialize an empty list of products
+  List<Product> _cartItems = []; // Initialize an empty list of cart items
 
   @override
   void initState() {
     super.initState();
     _databaseInitialized = _initializeDatabase();
-    _fetchProducts();
   }
 
   Future<void> _initializeDatabase() async {
@@ -40,24 +39,6 @@ class _DashboardPageState extends State<DashboardPage> {
       );
     } catch (e) {
       print('Error initializing database: $e');
-    }
-  }
-
-  Future<void> _fetchProducts() async {
-    try {
-      final List<Map<String, dynamic>> productsMap =
-          await _database.query('products');
-      setState(() {
-        products = productsMap
-            .map((productMap) => Product(
-                  id: productMap['id'],
-                  name: productMap['name'],
-                  price: productMap['price'],
-                ))
-            .toList();
-      });
-    } catch (e) {
-      print('Error fetching products: $e');
     }
   }
 
@@ -102,14 +83,15 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _getBody() {
     switch (_selectedIndex) {
       case 0:
-        return ProductListingPage(cartItems: products); // Return ProductListingPage widget
+        return ProductListingPage(
+            cartItems: _cartItems); // Pass _cartItems to ProductListingPage
       case 1:
-        return SalesInsightsPage(cartItems: products);
-      case 2: // Corrected index for RefillPage
+        return SalesInsightsPage(cartItems: _cartItems,);
+      case 2:
         return RefillPage();
-      case 3: // Corrected index for DeliveriesPage
+      case 3:
         return DeliveriesPage();
-      case 4: // Corrected index for InsightsPage
+      case 4:
         return AnalyticsPage();
       default:
         return Container();
@@ -122,3 +104,4 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 }
+

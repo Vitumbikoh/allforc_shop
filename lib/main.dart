@@ -1,8 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'firebase_options.dart';
 import 'login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -13,7 +19,9 @@ class MyApp extends StatelessWidget {
       title: 'Gas Shop Management',
       theme: ThemeData(
         primaryColor: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme:
+            ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent),
       ),
       home: WelcomePage(),
     );
