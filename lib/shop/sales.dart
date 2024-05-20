@@ -1,5 +1,5 @@
+import 'package:allforc_shop/shop/cart.dart';
 import 'package:flutter/material.dart';
-import 'cart.dart';
 import 'products.dart';
 
 class SalesInsightsPage extends StatefulWidget {
@@ -13,7 +13,6 @@ class SalesInsightsPage extends StatefulWidget {
 
 class _SalesInsightsPageState extends State<SalesInsightsPage> {
   late Widget _currentPage;
-  late final List<Product> cartItems;
 
   @override
   void initState() {

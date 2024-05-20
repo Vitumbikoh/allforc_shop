@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'analytics.dart'; 
+import 'analytics.dart';
 import 'refill.dart';
 import 'sales.dart';
 import 'deliveries.dart';
 import 'products.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'shop_cylinder_screen.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+class ShopDashboardPage extends StatefulWidget {
+  const ShopDashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<ShopDashboardPage> createState() => _ShopDashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _ShopDashboardPageState extends State<ShopDashboardPage> {
   int _selectedIndex = 0;
   late Database _database;
   late Future<void> _databaseInitialized;
@@ -102,11 +103,12 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _getBody() {
     switch (_selectedIndex) {
       case 0:
-        return ProductListingPage(cartItems: products); // Return ProductListingPage widget
+        return ProductListingPage(
+            cartItems: products); // Return ProductListingPage widget
       case 1:
         return SalesInsightsPage(cartItems: products);
       case 2: // Corrected index for RefillPage
-        return RefillPage();
+        return const ShopCylinderScreen();
       case 3: // Corrected index for DeliveriesPage
         return DeliveriesPage();
       case 4: // Corrected index for InsightsPage

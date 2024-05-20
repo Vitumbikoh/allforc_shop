@@ -7,12 +7,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-     
       body: ListView(
         children: <Widget>[
           // User Profile Section
-          ListTile(
+          const ListTile(
             leading: CircleAvatar(
               backgroundImage: AssetImage(
                   'assets/profile_image.jpg'), // Replace with user's profile image
@@ -20,10 +18,9 @@ class HomePage extends StatelessWidget {
             title: Text('John Doe'), // Replace with user's name
             subtitle: Text('john.doe@example.com'), // Replace with user's email
           ),
-        
 
           // Search Doctors Area
-          Padding(
+          const Padding(
             padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
             child: TextField(
               decoration: InputDecoration(
@@ -35,8 +32,8 @@ class HomePage extends StatelessWidget {
           ),
 
           // Categories
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text('Categories', style: TextStyle(fontSize: 24)),
           ),
           GridView.count(
@@ -67,18 +64,18 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Top Doctors', style: TextStyle(fontSize: 20)),
+                const Text('Top Doctors', style: TextStyle(fontSize: 20)),
                 TextButton(
                   onPressed: () {
                     print('See more tapped.');
                   },
-                  child: Text('See more'),
+                  child: const Text('See more'),
                 ),
               ],
             ),
           ),
           // Vertical List of Doctors
-          Column(
+          const Column(
             children: [
               DoctorItem(
                 name: 'Dr. John Smith',
@@ -119,7 +116,7 @@ class DoctorItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
           backgroundImage: AssetImage('assets/doctor_image.jpg'),
         ),
         title: Text(name),
@@ -129,12 +126,12 @@ class DoctorItem extends StatelessWidget {
             Text(profession),
             Row(
               children: [
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star_border, color: Colors.yellow),
-                Text('($rating ⭐)', style: TextStyle(color: Colors.grey)),
+                const Icon(Icons.star, color: Colors.yellow),
+                const Icon(Icons.star, color: Colors.yellow),
+                const Icon(Icons.star, color: Colors.yellow),
+                const Icon(Icons.star, color: Colors.yellow),
+                const Icon(Icons.star_border, color: Colors.yellow),
+                Text('($rating ⭐)', style: const TextStyle(color: Colors.grey)),
               ],
             ),
           ],

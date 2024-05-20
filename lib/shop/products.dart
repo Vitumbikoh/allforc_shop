@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'cart.dart';
 
 class ProductListingPage extends StatefulWidget {
   final List<Product> cartItems; // Define _cartItems here
 
-  ProductListingPage({Key? key, required this.cartItems}) : super(key: key);
+  const ProductListingPage({super.key, required this.cartItems});
 
   @override
-  _ProductListingPageState createState() => _ProductListingPageState();
+  State<ProductListingPage> createState() => _ProductListingPageState();
 }
 
 class _ProductListingPageState extends State<ProductListingPage> {
@@ -42,7 +43,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
       future: _databaseInitialized,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text('Error initializing database: ${snapshot.error}');
         } else {
@@ -52,22 +53,25 @@ class _ProductListingPageState extends State<ProductListingPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       _showAddProductDialog(context);
                     },
-                    icon: Icon(Icons.add),
-                    label: Text(
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
                       'Add Products',
                       style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 24.0,
                         vertical: 16.0,
                       ),
@@ -78,7 +82,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
                   future: _getProducts(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -87,7 +91,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
                         children: [
                           DataTable(
                             columnSpacing: 10.0,
-                            columns: [
+                            columns: const [
                               DataColumn(label: Text('No.')),
                               DataColumn(label: Text('Product Name')),
                               DataColumn(label: Text('Price'), numeric: true),
@@ -99,7 +103,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
                                 DataCell(Text((index + 1).toString())),
                                 DataCell(Text(product.name)),
                                 DataCell(Container(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   color: Colors.orange,
                                   child: Text(
                                     '\$${product.price.toStringAsFixed(2)}',
@@ -107,25 +111,17 @@ class _ProductListingPageState extends State<ProductListingPage> {
                                 )),
                                 DataCell(Row(
                                   children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        _addToCart(product);
-                                        setState(() {}); // Update UI
-                                      },
-                                      icon: Icon(
-                                        Icons.add_shopping_cart,
-                                        color: _isInCart(product)
-                                            ? Colors.green
-                                            : null, // Change color to green if product is in cart
-                                      ),
+                                    CartIcon(
+                                      product: product,
+                                      cartItems: widget.cartItems,
                                     ),
                                     PopupMenuButton(
                                       itemBuilder: (context) => [
-                                        PopupMenuItem(
+                                        const PopupMenuItem(
                                           value: 'edit',
                                           child: Text('Edit'),
                                         ),
-                                        PopupMenuItem(
+                                        const PopupMenuItem(
                                           value: 'delete',
                                           child: Text('Delete'),
                                         ),
@@ -155,7 +151,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
                                 ),
                               );
                             },
-                            child: Text('View Cart'),
+                            child: const Text('View Cart'),
                           ),
                         ],
                       );
@@ -177,19 +173,19 @@ class _ProductListingPageState extends State<ProductListingPage> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add Product'),
+        title: const Text('Add Product'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Product Name',
               ),
             ),
             TextField(
               controller: _priceController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Product Price',
               ),
               keyboardType: TextInputType.number,
@@ -201,7 +197,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -214,7 +210,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
               }
               Navigator.pop(context);
             },
-            child: Text('Add'),
+            child: const Text('Add'),
           ),
         ],
       ),
@@ -229,19 +225,19 @@ class _ProductListingPageState extends State<ProductListingPage> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Product'),
+        title: const Text('Edit Product'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Product Name',
               ),
             ),
             TextField(
               controller: _priceController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Product Price',
               ),
               keyboardType: TextInputType.number,
@@ -253,7 +249,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -267,7 +263,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
               }
               Navigator.pop(context);
             },
-            child: Text('Update'),
+            child: const Text('Update'),
           ),
         ],
       ),
@@ -328,6 +324,13 @@ class _ProductListingPageState extends State<ProductListingPage> {
         _cartItems.add(product);
       }
     });
+    // Update the cart page
+    Navigator.push(
+      context as BuildContext,
+      MaterialPageRoute(
+        builder: (context) => CartPage(cartItems: _cartItems),
+      ),
+    );
   }
 }
 
@@ -346,26 +349,36 @@ class Product {
   }
 }
 
-
-class CartPage extends StatelessWidget {
+class CartIcon extends StatefulWidget {
+  final Product product;
   final List<Product> cartItems;
 
-  const CartPage({Key? key, required this.cartItems}) : super(key: key);
+  CartIcon({required this.product, required this.cartItems});
+
+  @override
+  _CartIconState createState() => _CartIconState();
+}
+
+class _CartIconState extends State<CartIcon> {
+  bool _isInCart = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-      body: ListView.builder(
-        itemCount: cartItems.length,
-        itemBuilder: (context, index) {
-          final product = cartItems[index];
-          return ListTile(
-            title: Text(product.name),
-            subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-          );
-        },
+    return IconButton(
+      icon: Icon(
+        Icons.add_shopping_cart,
+        color: _isInCart ? Colors.green : null,
       ),
+      onPressed: () {
+        if (_isInCart) {
+          widget.cartItems.remove(widget.product);
+        } else {
+          widget.cartItems.add(widget.product);
+        }
+        setState(() {
+          _isInCart = !_isInCart;
+        });
+      },
     );
   }
 }

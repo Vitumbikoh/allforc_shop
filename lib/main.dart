@@ -1,32 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'firebase_options.dart';
+import 'shop/dashboard.dart';
 
-import 'login.dart';
-
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Gas Shop Management',
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent),
-      ),
-      home: WelcomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Gas Shop Management',
+          theme: ThemeData(
+            primaryColor: Colors.orange,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color.fromARGB(255, 1, 13, 34)),
+          ),
+          home: const WelcomePage(),
+        );
+      },
     );
   }
 }
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome to Gas Shop Management'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,15 +58,19 @@ class WelcomePage extends StatelessWidget {
               size: 100.0,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            SizedBox(height: 20.0),
-            Text(
-              'Welcome to Gas Shop Management',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 20.0),
+            const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                textAlign: TextAlign.center,
+                'Welcome to Gas Shop Management',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             Text(
               'Your all-in-one solution for managing gas shops',
               textAlign: TextAlign.center,
@@ -53,20 +79,22 @@ class WelcomePage extends StatelessWidget {
                 color: Colors.grey[700],
               ),
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ShopDashboardPage()),
                 );
               },
-              child: Text(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 40.0, vertical: 15.0),
+              ),
+              child: const Text(
                 'Get Started',
                 style: TextStyle(fontSize: 18.0),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
               ),
             ),
           ],

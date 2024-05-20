@@ -1,77 +1,69 @@
 import 'package:flutter/material.dart';
 
 class RefillPage extends StatefulWidget {
+  const RefillPage({super.key});
+
   @override
-  _RefillPageState createState() => _RefillPageState();
+  State<RefillPage> createState() => _RefillPageState();
 }
 
 class _RefillPageState extends State<RefillPage> {
-  final TextEditingController _cylinderTypeController = TextEditingController();
-  final TextEditingController _initialWeightController =
-      TextEditingController();
-  final TextEditingController _finalWeightController = TextEditingController();
-  final TextEditingController _refilledAmountController =
-      TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gas Refill'),
+        title: const Text('Gas Refill'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: _cylinderTypeController,
-              decoration: InputDecoration(labelText: 'Cylinder Type'),
-            ),
-            SizedBox(height: 10),
-            TextFormField(
-              controller: _initialWeightController,
-              decoration: InputDecoration(labelText: 'Initial Weight (kg)'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10),
-            TextFormField(
-              controller: _finalWeightController,
-              decoration: InputDecoration(labelText: 'Final Weight (kg)'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10),
-            TextFormField(
-              controller: _refilledAmountController,
-              decoration: InputDecoration(labelText: 'Refilled Amount (kg)'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _recordRefill();
-              },
-              child: Text('Record Refill'),
-            ),
-          ],
-        ),
+      resizeToAvoidBottomInset: true,
+      body: const Column(
+        children: [],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text('Add Cylinder',
+                            style: Theme.of(context).textTheme.titleLarge),
+                        const TextField(
+                          decoration:
+                              InputDecoration(labelText: 'Name/Description'),
+                        ),
+                        const TextField(
+                          decoration:
+                              InputDecoration(labelText: 'Tare Mass (kg)'),
+                          keyboardType: TextInputType.number,
+                        ),
+                        const TextField(
+                          decoration:
+                              InputDecoration(labelText: 'Gas Amount (kg)'),
+                          keyboardType: TextInputType.number,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Add Cylinder'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void _recordRefill() {
-    final String cylinderType = _cylinderTypeController.text;
-    final double initialWeight = double.parse(_initialWeightController.text);
-    final double finalWeight = double.parse(_finalWeightController.text);
-    final double refilledAmount = double.parse(_refilledAmountController.text);
-
-    // You can perform validation and further processing here
-    // For now, we'll just print the entered details
-    print('Cylinder Type: $cylinderType');
-    print('Initial Weight: $initialWeight kg');
-    print('Final Weight: $finalWeight kg');
-    print('Refilled Amount: $refilledAmount kg');
-
-    // After processing, you can save the refill details to the database
   }
 }
